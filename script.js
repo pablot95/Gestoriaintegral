@@ -114,20 +114,27 @@ document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById('contactForm');
     if (form) {
         form.addEventListener('submit', function (e) {
-            var nombre = document.getElementById('nombre');
-            var email = document.getElementById('email');
-            var mensaje = document.getElementById('mensaje');
+            e.preventDefault();
 
-            if (!nombre.value.trim() || !email.value.trim() || !mensaje.value.trim()) {
-                e.preventDefault();
-                return;
-            }
+            var nombre = document.getElementById('nombre').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var servicio = document.getElementById('servicio').value;
+            var mensaje = document.getElementById('mensaje').value.trim();
+
+            if (!nombre || !email || !servicio || !mensaje) return;
 
             var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email.value)) {
-                e.preventDefault();
-                return;
-            }
+            if (!emailPattern.test(email)) return;
+
+            var texto =
+                '*Nueva consulta desde el sitio web*\n' +
+                '*Nombre:* ' + nombre + '\n' +
+                '*Email:* ' + email + '\n' +
+                '*Servicio:* ' + servicio + '\n' +
+                '*Consulta:* ' + mensaje;
+
+            var url = 'https://wa.me/5492974710185?text=' + encodeURIComponent(texto);
+            window.open(url, '_blank', 'noopener,noreferrer');
         });
     }
 
